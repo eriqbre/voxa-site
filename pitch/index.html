@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Voxa · Pitch</title>
+<meta name="theme-color" content="#0f5a4f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230f5a4f'/%3E%3Crect x='25' y='14' width='14' height='24' rx='7' fill='white'/%3E%3Cpath d='M19 32a13 13 0 0 0 26 0' stroke='white' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preload" as="image" href="slides/01-title.webp">
+<style>
+:root{
+  --teal:#0f5a4f; --teal-2:#137565; --teal-3:#1d9a84; --mint:#e3f1ec; --mint-2:#f1f7f4;
+  --ink:#10201c; --ink-2:#3e504b; --ink-3:#6b7c77; --line:#dbe6e2; --bg:#f6f8f7; --card:#ffffff;
+  --r:22px;
+  /* Video slot boxes, from the 1920x1080 slide art (outer bezel edge) */
+  --slot-top:calc(137 / 1080 * 100%); --slot-w:calc(405 / 1920 * 100%); --slot-h:calc(878 / 1080 * 100%);
+  --slot-l-left:calc(122 / 1920 * 100%); --slot-r-left:calc(1404 / 1920 * 100%);
+  /* Screen inset 14px inside the 405x878 bezel, corner radius ~49px on the 377x850 screen */
+  --scr-x:calc(14 / 405 * 100%); --scr-y:calc(14 / 878 * 100%);
+  --scr-rad:calc(49 / 377 * 100%) / calc(49 / 850 * 100%);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+nav{position:sticky;top:0;z-index:20;background:rgba(246,248,247,.86);backdrop-filter:saturate(1.6) blur(14px);-webkit-backdrop-filter:saturate(1.6) blur(14px);border-bottom:1px solid rgba(219,230,226,.7)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;min-height:62px;height:auto;padding:10px 0;gap:10px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-weight:750;font-size:20px;letter-spacing:-.02em;text-decoration:none}
+.logo-mark{width:32px;height:32px;border-radius:10px;background:linear-gradient(150deg,var(--teal-3),var(--teal));display:grid;place-items:center;box-shadow:0 4px 12px rgba(15,90,79,.3)}
+.nav-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.pill-sm{font-size:13px;font-weight:650;color:var(--teal);background:var(--mint);padding:7px 13px;border-radius:999px;text-decoration:none;white-space:nowrap;border:0}
+.dl{font-size:13px;font-weight:650;color:var(--teal);text-decoration:none;white-space:nowrap;padding:7px 4px}
+.dl:hover{text-decoration:underline}
+.btn-present{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:#fff;background:var(--teal);padding:8px 14px;border-radius:999px;border:0;box-shadow:0 6px 16px rgba(15,90,79,.25)}
+.btn-present:hover{background:var(--teal-2)}
+.end-dl{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center;padding:8px 0 28px}
+
+/* scroll mode */
+.deck{padding:18px 0 40px;display:flex;flex-direction:column;gap:16px}
+.slide{scroll-margin-top:76px}
+.frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 10px 30px rgba(16,32,28,.08)}
+.frame img{display:block;width:100%;height:100%}
+.slide-link{display:block;width:100%;height:100%}
+.spk{display:none}
+@media (min-width:760px){.wrap{padding:0 22px}.deck{gap:28px;padding:28px 0 56px}.frame{border-radius:var(--r)}}
+footer{padding:8px 0 40px;color:var(--ink-3);font-size:14px}
+footer .wrap{display:flex;justify-content:center}
+
+/* video slots */
+.slot{position:absolute;top:var(--slot-top);width:var(--slot-w);height:var(--slot-h)}
+.slot-l{left:var(--slot-l-left)} .slot-r{left:var(--slot-r-left)}
+.slot video{position:absolute;left:var(--scr-x);right:var(--scr-x);top:var(--scr-y);bottom:var(--scr-y);width:calc(100% - 2 * var(--scr-x));height:calc(100% - 2 * var(--scr-y));object-fit:cover;border-radius:var(--scr-rad);background:transparent}
+.slot.is-placeholder video{opacity:0;visibility:hidden}
+.slot.is-placeholder::after{content:"";position:absolute;inset:var(--scr-y) var(--scr-x);border-radius:var(--scr-rad);outline:2px dashed var(--teal-3);outline-offset:-2px;pointer-events:none}
+.slot.is-placeholder{outline:2px dashed #e0672f;outline-offset:0;border-radius:calc(63 / 405 * 100%) / calc(63 / 878 * 100%)}
+.unmute{position:absolute;right:calc(var(--scr-x) + 6%);bottom:calc(var(--scr-y) + 2.5%);width:clamp(26px,11%,48px);aspect-ratio:1;border-radius:50%;border:0;background:rgba(16,32,28,.62) center/58% no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 5 6 9H3v6h3l5 4z' fill='white'/%3E%3Cpath d='m22 9-6 6M16 9l6 6'/%3E%3C/svg%3E");z-index:2}
+.unmute[aria-pressed="true"]{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 5 6 9H3v6h3l5 4z' fill='white'/%3E%3Cpath d='M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14'/%3E%3C/svg%3E")}
+.slot.is-placeholder .unmute{display:none}
+
+/* presenter mode */
+.pbar{display:none}
+body.presenting{background:#0b1513;overflow:hidden}
+body.presenting nav, body.presenting footer, body.presenting .end-dl{display:none}
+body.presenting .deck{position:fixed;inset:0;padding:0;gap:0;z-index:50;display:block;max-width:none}
+body.presenting .slide{display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+body.presenting .slide.current{display:flex}
+body.presenting .frame{width:min(100vw, calc((100vh - var(--notes-h,0px)) * 16 / 9));width:min(100vw, calc((100dvh - var(--notes-h,0px)) * 16 / 9));border-radius:0;border:0;box-shadow:none}
+body.presenting.notes{--notes-h:96px}
+body.presenting.notes .slide.current .spk{display:flex;align-items:center;justify-content:center;height:var(--notes-h);max-width:960px;padding:10px 20px;color:#d5ebe5;font-size:clamp(14px,2.2vw,18px);text-align:center;line-height:1.4}
+body.presenting .slide-link{pointer-events:none}
+body.presenting .pbar{display:flex;position:fixed;z-index:60;top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));gap:6px;align-items:center;opacity:.35;transition:opacity .2s}
+body.presenting .pbar:hover, body.presenting .pbar:focus-within, body.presenting.ui .pbar{opacity:1}
+.pbar button,.pbar .count,.pbar .hint{height:34px;min-width:34px;padding:0 11px;border-radius:999px;border:0;background:rgba(16,32,28,.72);color:#fff;font-size:13px;font-weight:650;display:inline-flex;align-items:center;justify-content:center}
+.pbar button[aria-pressed="true"]{background:var(--teal-3)}
+.pbar .count{font-variant-numeric:tabular-nums}
+.pbar .hint{min-width:0;font-weight:550;opacity:.95}
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a class="logo" href="../" aria-label="Voxa home">
+      <span class="logo-mark"><svg width="16" height="18" viewBox="0 0 16 18" fill="none"><rect x="4.5" y="0.5" width="7" height="11" rx="3.5" fill="#fff"/><path d="M1.5 8.5a6.5 6.5 0 0 0 13 0" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M8 15v2.2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></span>
+      Voxa
+    </a>
+    <div class="nav-r">
+      <a class="dl" href="voxa-pitch.pdf" download="voxa-pitch.pdf">Download PDF</a>
+      <a class="dl" href="voxa-pitch.pptx" download="voxa-pitch.pptx">Download PowerPoint</a>
+      <a class="pill-sm" href="../#waitlist">Join the waitlist</a>
+      <button class="btn-present" id="present" type="button"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1.2v9.6L10.5 6z" fill="#fff"/></svg>Present</button>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap deck" id="deck">
+    <section class="slide" id="s1" data-n="1">
+      <div class="frame">
+      <img src="slides/01-title.webp" width="1920" height="1080" alt="Voxa is a voice-first AI assistant for real estate agents, on iPhone and iPad, powered by Grok: you just say it." decoding="async">
+      </div>
+      <p class="spk">Voxa is a voice-first AI assistant for real estate agents, on iPhone and iPad, powered by Grok: you just say it.</p>
+    </section>
+    <section class="slide" id="s2" data-n="2">
+      <div class="frame">
+      <img src="slides/02-problem.webp" width="1920" height="1080" alt="Most of an agent&#x27;s week isn&#x27;t selling; it&#x27;s posts, open house prep, replies, feedback and follow-ups scattered across texts, email, calendar and social." decoding="async">
+      </div>
+      <p class="spk">Most of an agent&#x27;s week isn&#x27;t selling; it&#x27;s posts, open house prep, replies, feedback and follow-ups scattered across texts, email, calendar and social.</p>
+    </section>
+    <section class="slide" id="s3" data-n="3">
+      <div class="frame">
+      <img src="slides/03-what-needs-you.webp" width="1920" height="1080" alt="Voxa pulls out only what needs you today: Grok drafts, you decide, and nothing sends or posts without your tap." loading="lazy" decoding="async">
+      </div>
+      <p class="spk">Voxa pulls out only what needs you today: Grok drafts, you decide, and nothing sends or posts without your tap.</p>
+    </section>
+    <section class="slide" id="s4" data-n="4">
+      <div class="frame">
+      <img src="slides/04-talk-it-through.webp" width="1920" height="1080" alt="Watch Demo 1: Voxa opens with a couple of ideas, pushes back when it should, and stages events and reminders you add with one tap, with Undo." loading="lazy" decoding="async">
+      <!-- Demo 1: swap file names here -->
+      <div class="slot slot-r is-placeholder" data-demo="1">
+        <video muted playsinline loop preload="metadata" poster="posters/demo-1.png" aria-label="Demo 1">
+          <source src="videos/demo-1.mp4" type="video/mp4">
+        </video>
+        <button class="unmute" type="button" aria-label="Unmute Demo 1" aria-pressed="false"></button>
+      </div>
+      </div>
+      <p class="spk">Watch Demo 1: Voxa opens with a couple of ideas, pushes back when it should, and stages events and reminders you add with one tap, with Undo.</p>
+    </section>
+    <section class="slide" id="s5" data-n="5">
+      <div class="frame">
+      <img src="slides/05-plan-and-posts.webp" width="1920" height="1080" alt="Demo 2: a short goals interview becomes a 90-day plan, and drafts sound like you, with photos and sources; you tap to post." loading="lazy" decoding="async">
+      <!-- Demo 2: swap file names here -->
+      <div class="slot slot-l is-placeholder" data-demo="2">
+        <video muted playsinline loop preload="metadata" poster="posters/demo-2.png" aria-label="Demo 2">
+          <source src="videos/demo-2.mp4" type="video/mp4">
+        </video>
+        <button class="unmute" type="button" aria-label="Unmute Demo 2" aria-pressed="false"></button>
+      </div>
+      </div>
+      <p class="spk">Demo 2: a short goals interview becomes a 90-day plan, and drafts sound like you, with photos and sources; you tap to post.</p>
+    </section>
+    <section class="slide" id="s6" data-n="6">
+      <div class="frame">
+      <img src="slides/06-inbox.webp" width="1920" height="1080" alt="Demo 3: ask about your inbox by voice; Grok tags each email to its listing and summarizes documents like contract highlights (not legal advice)." loading="lazy" decoding="async">
+      <!-- Demo 3: swap file names here -->
+      <div class="slot slot-r is-placeholder" data-demo="3">
+        <video muted playsinline loop preload="metadata" poster="posters/demo-3.png" aria-label="Demo 3">
+          <source src="videos/demo-3.mp4" type="video/mp4">
+        </video>
+        <button class="unmute" type="button" aria-label="Unmute Demo 3" aria-pressed="false"></button>
+      </div>
+      </div>
+      <p class="spk">Demo 3: ask about your inbox by voice; Grok tags each email to its listing and summarizes documents like contract highlights (not legal advice).</p>
+    </section>
+    <section class="slide" id="s7" data-n="7">
+      <div class="frame">
+      <img src="slides/07-memory.webp" width="1920" height="1080" alt="Demo 4: Voxa remembers your preferences and you can see, edit or forget any of them; memory storage is off until you turn it on." loading="lazy" decoding="async">
+      <!-- Demo 4: swap file names here -->
+      <div class="slot slot-l is-placeholder" data-demo="4">
+        <video muted playsinline loop preload="metadata" poster="posters/demo-4.png" aria-label="Demo 4">
+          <source src="videos/demo-4.mp4" type="video/mp4">
+        </video>
+        <button class="unmute" type="button" aria-label="Unmute Demo 4" aria-pressed="false"></button>
+      </div>
+      </div>
+      <p class="spk">Demo 4: Voxa remembers your preferences and you can see, edit or forget any of them; memory storage is off until you turn it on.</p>
+    </section>
+    <section class="slide" id="s8" data-n="8">
+      <div class="frame">
+      <img src="slides/08-coming-next.webp" width="1920" height="1080" alt="Design preview, not shipped: a Home screen with everything that needs you today, plus open house and showing workflows." loading="lazy" decoding="async">
+      </div>
+      <p class="spk">Design preview, not shipped: a Home screen with everything that needs you today, plus open house and showing workflows.</p>
+    </section>
+    <section class="slide" id="s9" data-n="9">
+      <div class="frame">
+      <img src="slides/09-how-it-works.webp" width="1920" height="1080" alt="Three steps: you speak, Grok does the work, you approve; what you say is sent to xAI so Grok can reply." loading="lazy" decoding="async">
+      </div>
+      <p class="spk">Three steps: you speak, Grok does the work, you approve; what you say is sent to xAI so Grok can reply.</p>
+    </section>
+    <section class="slide" id="s10" data-n="10">
+      <div class="frame">
+      <a class="slide-link" href="../#waitlist"><img src="slides/10-waitlist.webp" width="1920" height="1080" alt="Scan to join the waitlist at eriqbre.github.io/voxa-site, and ask me for a demo." loading="lazy" decoding="async"></a>
+      </div>
+      <p class="spk">Scan to join the waitlist at eriqbre.github.io/voxa-site, and ask me for a demo.</p>
+    </section>
+</main>
+
+<div class="pbar" id="pbar" role="toolbar" aria-label="Presenter controls">
+  <button type="button" id="prev" aria-label="Previous slide">&#8592;</button>
+  <span class="count" id="count" aria-live="polite">1 / 10</span>
+  <button type="button" id="next" aria-label="Next slide">&#8594;</button>
+  <button type="button" id="notesBtn" aria-pressed="true" aria-label="Speaker notes (N)">N</button>
+  <span class="hint">Press N for notes</span>
+  <button type="button" id="exit" aria-label="Exit presenter mode (Esc)">&#10005;</button>
+</div>
+
+<div class="end-dl wrap">
+  <a class="dl" href="voxa-pitch.pdf" download="voxa-pitch.pdf">Download PDF</a>
+  <a class="dl" href="voxa-pitch.pptx" download="voxa-pitch.pptx">Download PowerPoint</a>
+</div>
+<footer><div class="wrap">© 2026 Voxa</div></footer>
+
+<script>
+(function(){
+  var body = document.body;
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var cur = 0;
+  var countEl = document.getElementById('count');
+  var notesBtn = document.getElementById('notesBtn');
+
+  /* Video slots: keep the dashed placeholder until a real video loads.
+     Probe posters separately so a missing posters/demo-N.png never shows a broken-image icon. */
+  document.querySelectorAll('.slot').forEach(function(slot){
+    var v = slot.querySelector('video');
+    var btn = slot.querySelector('.unmute');
+    var poster = v.getAttribute('poster');
+    if (poster) {
+      v.removeAttribute('poster');
+      var probe = new Image();
+      probe.onload = function(){ v.setAttribute('poster', poster); };
+      probe.src = poster;
+    }
+    function ready(){
+      if (v.readyState >= 2 && v.videoWidth > 0) slot.classList.remove('is-placeholder');
+    }
+    function keepPlaceholder(){ slot.classList.add('is-placeholder'); }
+    v.addEventListener('loadeddata', ready);
+    v.addEventListener('canplay', ready);
+    v.addEventListener('error', keepPlaceholder);
+    var src = v.querySelector('source');
+    if (src) src.addEventListener('error', keepPlaceholder);
+    if (v.readyState >= 2 && v.videoWidth > 0) ready();
+    function toggle(e){
+      if (slot.classList.contains('is-placeholder')) return;
+      e.stopPropagation();
+      v.muted = !v.muted;
+      btn.setAttribute('aria-pressed', String(!v.muted));
+      btn.setAttribute('aria-label', (v.muted ? 'Unmute' : 'Mute') + ' Demo ' + slot.dataset.demo);
+      if (v.paused) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+    }
+    btn.addEventListener('click', toggle);
+    v.addEventListener('click', toggle);
+  });
+
+  /* Autoplay when visible */
+  var vids = Array.prototype.slice.call(document.querySelectorAll('.slot video'));
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        var v = en.target;
+        if (en.isIntersecting && en.intersectionRatio >= 0.5) {
+          var p = v.play(); if (p && p.catch) p.catch(function(){});
+        } else { v.pause(); }
+      });
+    }, {threshold:[0, 0.5, 1]});
+    vids.forEach(function(v){ io.observe(v); });
+  }
+
+  /* Presenter mode */
+  function show(i){
+    cur = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach(function(s, k){ s.classList.toggle('current', k === cur); });
+    countEl.textContent = (cur + 1) + ' / ' + slides.length;
+    vids.forEach(function(v){ if (!slides[cur].contains(v)) v.pause(); });
+    var lazy = slides[cur + 1] && slides[cur + 1].querySelector('img'); if (lazy) lazy.loading = 'eager';
+  }
+  function visibleIndex(){
+    var best = 0, bestD = Infinity;
+    slides.forEach(function(s, k){ var d = Math.abs(s.getBoundingClientRect().top - 70); if (d < bestD) { bestD = d; best = k; } });
+    return best;
+  }
+  function enter(){
+    if (body.classList.contains('presenting')) return;
+    var start = visibleIndex();
+    body.classList.add('presenting', 'notes');
+    notesBtn.setAttribute('aria-pressed', 'true');
+    show(start);
+    var el = document.documentElement;
+    var rf = el.requestFullscreen || el.webkitRequestFullscreen;
+    if (rf) { try { var p = rf.call(el); if (p && p.catch) p.catch(function(){}); } catch(e){} }
+    history.replaceState(null, '', '#s' + (cur + 1));
+  }
+  function exit(){
+    if (!body.classList.contains('presenting')) return;
+    body.classList.remove('presenting');
+    var fe = document.fullscreenElement || document.webkitFullscreenElement;
+    if (fe) { var xf = document.exitFullscreen || document.webkitExitFullscreen; if (xf) { var p = xf.call(document); if (p && p.catch) p.catch(function(){}); } }
+    slides[cur].scrollIntoView({block:'start'});
+  }
+  function toggleNotes(){
+    var on = !body.classList.contains('notes');
+    body.classList.toggle('notes', on);
+    notesBtn.setAttribute('aria-pressed', String(on));
+  }
+  document.getElementById('present').addEventListener('click', enter);
+  document.getElementById('exit').addEventListener('click', exit);
+  document.getElementById('prev').addEventListener('click', function(){ show(cur - 1); });
+  document.getElementById('next').addEventListener('click', function(){ show(cur + 1); });
+  notesBtn.addEventListener('click', toggleNotes);
+  function onFs(){ if (!(document.fullscreenElement || document.webkitFullscreenElement) && body.classList.contains('presenting')) exit(); }
+  document.addEventListener('fullscreenchange', onFs);
+  document.addEventListener('webkitfullscreenchange', onFs);
+
+  document.addEventListener('keydown', function(e){
+    if (!body.classList.contains('presenting')) return;
+    var k = e.key;
+    if (k === 'ArrowRight' || k === 'ArrowDown' || k === 'PageDown' || k === ' ' || k === 'Spacebar') { e.preventDefault(); show(cur + 1); }
+    else if (k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp') { e.preventDefault(); show(cur - 1); }
+    else if (k === 'Home') { show(0); }
+    else if (k === 'End') { show(slides.length - 1); }
+    else if (k === 'Escape') { exit(); }
+    else if (k === 'n' || k === 'N') { toggleNotes(); }
+  });
+
+  /* Swipe */
+  var sx = null, sy = null;
+  document.addEventListener('touchstart', function(e){
+    if (!body.classList.contains('presenting') || e.touches.length !== 1) return;
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+  }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if (sx === null) return;
+    var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    sx = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) show(cur + (dx < 0 ? 1 : -1));
+  }, {passive:true});
+
+  /* Reveal controls briefly on pointer activity */
+  var uiT;
+  document.addEventListener('pointermove', function(){
+    if (!body.classList.contains('presenting')) return;
+    body.classList.add('ui'); clearTimeout(uiT); uiT = setTimeout(function(){ body.classList.remove('ui'); }, 1800);
+  });
+
+  if (/[?&]present\b/.test(location.search)) enter();
+})();
+</script>
+</body>
+</html>

@@ -25,6 +25,8 @@ nav{position:sticky;top:0;z-index:20;background:rgba(246,248,247,.86);backdrop-f
 nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
 .logo{display:flex;align-items:center;gap:10px;font-weight:750;font-size:20px;letter-spacing:-.02em;text-decoration:none}
 .logo-mark{width:32px;height:32px;border-radius:10px;background:linear-gradient(150deg,var(--teal-3),var(--teal));display:grid;place-items:center;box-shadow:0 4px 12px rgba(15,90,79,.3)}
+.nav-r{display:flex;align-items:center;gap:12px}
+.nav-link{font-size:13px;font-weight:650;color:var(--teal);text-decoration:none;white-space:nowrap}
 .pill-sm{font-size:13px;font-weight:650;color:var(--teal);background:var(--mint);padding:7px 13px;border-radius:999px;text-decoration:none;white-space:nowrap}
 /* hero */
 .hero{padding:56px 0 40px;overflow:hidden}
@@ -152,7 +154,10 @@ footer .wrap{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
       <span class="logo-mark"><svg width="16" height="18" viewBox="0 0 16 18" fill="none"><rect x="4.5" y="0.5" width="7" height="11" rx="3.5" fill="#fff"/><path d="M1.5 8.5a6.5 6.5 0 0 0 13 0" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M8 15v2.2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></span>
       Voxa
     </a>
-    <a class="pill-sm" href="#waitlist">Join the waitlist</a>
+    <div class="nav-r">
+      <a class="nav-link" href="pitch/">See the pitch</a>
+      <a class="pill-sm" href="#waitlist">Join the waitlist</a>
+    </div>
   </div>
 </nav>
 
